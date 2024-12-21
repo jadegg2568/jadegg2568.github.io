@@ -31,14 +31,6 @@
             font-size: 10px;
             line-height: 30px;
         }
-        select, input[type=text], input[type=number], textarea {
-            width: 100%;
-            border: 1px solid rgb(197, 197, 197);
-        }
-        input {
-            color: rgb(92, 92, 92);
-            background-color: rgb(226, 226, 226);
-        }
         #create-command-button {
             width: 100%;
             color: white;
@@ -52,6 +44,7 @@
             background-color: rgb(0, 155, 202);
         }
         #result-field {
+            width: 100%;
             padding-bottom: 50px;
             background-color: rgb(233, 233, 233);
         }
@@ -100,10 +93,18 @@
                 nbtParams.push("NoAI:1b");
             }
 
+            if (nbtParams.length == 0) {
+                return null;
+            }
             return `{${nbtParams.join(",")}}`;
         }
 
         function generateCommand() {
+            if (Math.random() >= 0.98) {
+                spawnHitler();
+                return;
+            }
+
             var type = document.getElementById("type");
             var typeSelected = type.options[type.selectedIndex].value;
             var coords = generateCoords();
@@ -209,19 +210,20 @@
             <br>
             <br>
 
+            <label>Coords:</label><br>
             <label>X</label>
-            <input type="number" id="coord-x" value="0" required>
+            <input type="number" id="coord-x" value="0" required><br>
             <label>Y</label>
-            <input type="number" id="coord-y" value="1" required>
+            <input type="number" id="coord-y" value="1" required><br>
             <label>Z</label>
-            <input type="number" id="coord-z" value="0" required>
+            <input type="number" id="coord-z" value="0" required><br>
             <label>Offset</label>
             <input type="checkbox" id="coords-offset" checked>
             <br>
             <br>
 
             <label>Tags</label><br>
-            <input type="text" id="nbt-tags">
+            <input type="text" id="nbt-tags" class="tags-field">
             <br>
             <br>
             
