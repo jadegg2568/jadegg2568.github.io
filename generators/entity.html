@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Entity Generator</title>
     <style>
         * {
+            padding: 0px;
+            margin: 0px;
             font-size: 25px;
         }
         body {
-            background-image: url("https://jadegg2568.github.io/hitler.jpg");
+            background-image: linear-gradient(rgb(255, 251, 0), rgb(0, 255, 34));
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -18,14 +20,13 @@
             height: 100%;
             margin-left: 15%;
             margin-right: 15%;
-            padding: 50px 0px 50px 0px;
             background-color: rgb(255, 255, 255);
             border: 5px solid rgb(197, 197, 197);
             border-radius: 20px;
         }
-        #generator-form {
-            margin-top: 30px;
-            margin-bottom: 30px;
+        #container-form {
+            margin-top: 5%;
+            margin-bottom: 5%;
             margin-left: 8%;
             margin-right: 8%;
             font-size: 10px;
@@ -33,11 +34,11 @@
         }
         #create-command-button {
             width: 100%;
+            padding: 10px 120px 10px 120px;
             color: white;
             background-color: rgb(0, 195, 255);
             border: 1px solid rgb(197, 197, 197);
             border-radius: 5px;
-            padding: 10px 120px 10px 120px;
         }
         #create-command-button:hover {
             color: white;
@@ -51,19 +52,9 @@
         #result-field:hover {
             background-color: rgb(202, 202, 202);
         }
-        #hitler-button {
-            margin: 0px;
-            font-size: 3px;
-            border: none;
-        }
     </style>
 
     <script type="text/javascript">
-        function spawnHitler() {
-            document.getElementById("container").remove();
-            new Audio("https://jadegg2568.github.io/hitler.mp3").play();
-        }
-    
         function generateCoords() {
             var coordX = document.getElementById("coord-x").value;
             var coordY = document.getElementById("coord-y").value;
@@ -100,27 +91,26 @@
         }
 
         function generateCommand() {
-            if (Math.random() >= 0.98) {
-                spawnHitler();
-                return;
+            const type = document.getElementById("type");
+            const typeSelected = type.options[type.selectedIndex].value;
+            const coords = generateCoords();
+
+            if (typeSelected == "custom:uwurden") {
+                const cmd = `/summon warden ${coords} {attributes:[{id:\"generic.max_health\",base:1.0d},{id:\"generic.attack_damage\",base:0.0d}],CustomName:\'{\"text\":\"UwUrden\"}\',ArmorItems:[{id:\"minecraft:poppy\",count:1b,Count:1b},{},{},{}],ArmorDropChances:[100.0f,0.0f,0.0f,0.0f],CustomNameVisible:1b,Health:1.0f}`;
+
+                document.getElementById("result-field").innerHTML = cmd;
+            } else {
+                const nbt = generateNBT();
+                const cmd = `/summon ${typeSelected} ${coords}${nbt ? " " + nbt : ""}`;
+
+                document.getElementById("result-field").innerHTML = cmd;
             }
-
-            var type = document.getElementById("type");
-            var typeSelected = type.options[type.selectedIndex].value;
-            var coords = generateCoords();
-            var nbt = generateNBT();
-
-            var cmd = `/summon ${typeSelected} ${coords}${nbt ? " " + nbt : ""}`;
-
-            document.getElementById("result-field").innerHTML = cmd;
         }
     </script>
 </head>
 <body>
     <div id="container">
-        <button onclick="spawnHitler()" id="hitler-button">Hitler kaputt</button>
-
-        <form action="javascript:generateCommand()" id="generator-form">
+        <form action="javascript:generateCommand()" id="container-form">
             <label>Type:</label><br>
             <select id="type" required>
                 <option value="minecraft:allay">Allay</option>
@@ -200,7 +190,8 @@
                 <option value="minecraft:wither">Wither</option>
                 <option value="minecraft:wither_skeleton">Wither Skeleton</option>
                 <option value="minecraft:wolf">Wolf</option>
-                <option value="minecraft:wwarden">Wwarden</option>
+                <option value="minecraft:warden">Warden</option>
+                <option value="custom:uwurden">UwUrden</option>
                 <option value="minecraft:zoglin">Zoglin</option>
                 <option value="minecraft:zombie">Zombie</option>
                 <option value="minecraft:zombie_horse">Zombie Horse</option>
