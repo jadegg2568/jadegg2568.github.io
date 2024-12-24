@@ -11,7 +11,7 @@
             font-size: 25px;
         }
         body {
-            background-image: linear-gradient(rgb(255, 251, 0), rgb(0, 255, 34));
+            background-image: linear-gradient(rgb(255, 0, 0), rgb(255, 72, 0));
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -20,6 +20,13 @@
             height: 100%;
             margin-left: 15%;
             margin-right: 15%;
+            font-size: 23px;
+            line-height: 30px;
+        }
+        #container {
+            height: 100%;
+            margin-left: 10%;
+            margin-right: 10%;
             background-color: rgb(255, 255, 255);
             border: 5px solid rgb(197, 197, 197);
             border-radius: 20px;
@@ -35,6 +42,19 @@
         #create-command-button {
             width: 100%;
             padding: 10px 120px 10px 120px;
+            margin-top: 1%;
+            margin-bottom: 1%;
+            margin-left: 3%;
+            margin-right: 3%;
+            align-items: center;
+            justify-content: center;
+        }
+        .field {
+            width: 90%;
+        }
+        .button {
+            width: 100%;
+            height: 50px;
             color: white;
             background-color: rgb(0, 195, 255);
             border: 1px solid rgb(197, 197, 197);
@@ -42,11 +62,13 @@
         }
         #create-command-button:hover {
             color: white;
+        .button:hover {
             background-color: rgb(0, 155, 202);
         }
         #result-field {
             width: 100%;
             padding-bottom: 50px;
+            height: 100px;
             background-color: rgb(233, 233, 233);
         }
         #result-field:hover {
@@ -105,6 +127,10 @@
 
                 document.getElementById("result-field").innerHTML = cmd;
             }
+        }
+
+        function copyCommand() {
+            navigator.clipboard.writeText(document.getElementById("result-field").innerHTML);
         }
     </script>
 </head>
@@ -203,11 +229,11 @@
 
             <label>Coords:</label><br>
             <label>X</label>
-            <input type="number" id="coord-x" value="0" required><br>
+            <input type="number" id="coord-x" class="field" value="0" required><br>
             <label>Y</label>
-            <input type="number" id="coord-y" value="1" required><br>
+            <input type="number" id="coord-y" class="field" value="1" required><br>
             <label>Z</label>
-            <input type="number" id="coord-z" value="0" required><br>
+            <input type="number" id="coord-z" class="field" value="0" required><br>
             <label>Offset</label>
             <input type="checkbox" id="coords-offset" checked>
             <br>
@@ -215,6 +241,7 @@
 
             <label>Tags</label><br>
             <input type="text" id="nbt-tags" class="tags-field">
+            <input type="text" id="nbt-tags" class="field">
             <br>
             <br>
             
@@ -227,10 +254,13 @@
             <br>
             <br>
 
-            <button type="submit" id="create-command-button">Create the command!</button><br>
+            <button type="submit" class="button">Create the command!</button>
+            <button type="button" onclick="copyCommand()" id="copy-button" class="button">Copy</button>
+            <br>
             <br>
             <textarea id="result-field" readonly></textarea>
         </form>
     </div>
 </body>
+</html>
 </html>
