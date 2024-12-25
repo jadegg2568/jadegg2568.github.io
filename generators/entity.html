@@ -11,46 +11,31 @@
             font-size: 25px;
         }
         body {
-            background-image: linear-gradient(rgb(255, 0, 0), rgb(255, 72, 0));
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
+            background-image: linear-gradient(rgb(0, 132, 255), rgb(0, 89, 255));
         }
         #container {
             height: 100%;
-            margin-left: 15%;
-            margin-right: 15%;
-            font-size: 23px;
-            line-height: 30px;
-        }
-        #container {
-            height: 100%;
-            margin-left: 10%;
-            margin-right: 10%;
+            margin-top: 1%;
+            margin-bottom: 1%;
+            margin-left: 25%;
+            margin-right: 25%;
             background-color: rgb(255, 255, 255);
             border: 5px solid rgb(197, 197, 197);
             border-radius: 20px;
         }
         #container-form {
-            margin-top: 5%;
-            margin-bottom: 5%;
-            margin-left: 8%;
-            margin-right: 8%;
-            font-size: 10px;
-            line-height: 30px;
+            height: 100%;
+            margin-top: 3%;
+            margin-bottom: 3%;
+            margin-left: 10%;
+            margin-right: 10%;
         }
-        #create-command-button {
-            width: 100%;
-            padding: 10px 120px 10px 120px;
-            margin-top: 1%;
-            margin-bottom: 1%;
-            margin-left: 3%;
-            margin-right: 3%;
-            align-items: center;
-            justify-content: center;
+        #container-form > div {
+            margin-bottom: 3%;
         }
         .field {
-            width: 90%;
+            width: 50%;
+            color: rgb(73, 73, 73);
         }
         .button {
             width: 100%;
@@ -60,15 +45,12 @@
             border: 1px solid rgb(197, 197, 197);
             border-radius: 5px;
         }
-        #create-command-button:hover {
-            color: white;
         .button:hover {
             background-color: rgb(0, 155, 202);
         }
         #result-field {
             width: 100%;
             padding-bottom: 50px;
-            height: 100px;
             background-color: rgb(233, 233, 233);
         }
         #result-field:hover {
@@ -87,12 +69,28 @@
         }
 
         function generateNBT() {
-            var tags = document.getElementById("nbt-tags").value.replace(", ", ",");
-            var noGravity = document.getElementById("nbt-nogravity").checked;
-            var invulnerable = document.getElementById("nbt-invulnerable").checked;
-            var noAI = document.getElementById("nbt-noai").checked;
+            const customName = document.getElementById("nbt-customname").value;
+            const customNameVisible = document.getElementById("nbt-customnamevisible").checked;
+            const health = document.getElementById("nbt-health").value;
+            const tags = document.getElementById("nbt-tags").value.replace(", ", ",");
+            const noGravity = document.getElementById("nbt-nogravity").checked;
+            const invulnerable = document.getElementById("nbt-invulnerable").checked;
+            const noAI = document.getElementById("nbt-noai").checked;
 
-            var nbtParams = [];
+            const nbtParams = [];
+            if (customName) {
+                if (customName.startsWith("{") && customName.endsWith("}")) {
+                    nbtParams.push(`CustomName:'${customName}'`);
+                } else {
+                    nbtParams.push(`CustomName:'{"text":"${customName}"}'`);
+                }
+            }
+            if (health) {
+                nbtParams.push(`Health:${health}.0f`);
+            }
+            if (customNameVisible) {
+                nbtParams.push("CustomNameVisible:1b");
+            }
             if (tags) {
                 nbtParams.push(`Tags:[${tags}]`);
             }
@@ -118,7 +116,7 @@
             const coords = generateCoords();
 
             if (typeSelected == "custom:uwurden") {
-                const cmd = `/summon warden ${coords} {attributes:[{id:\"generic.max_health\",base:1.0d},{id:\"generic.attack_damage\",base:0.0d}],CustomName:\'{\"text\":\"UwUrden\"}\',ArmorItems:[{id:\"minecraft:poppy\",count:1b,Count:1b},{},{},{}],ArmorDropChances:[100.0f,0.0f,0.0f,0.0f],CustomNameVisible:1b,Health:1.0f}`;
+                const cmd = `/summon minecraft:warden ${coords} {attributes:[{id:\"generic.max_health\",base:1.0d},{id:\"generic.attack_damage\",base:0.0d}],CustomName:\'{\"text\":\"UwUrden\"}\',ArmorItems:[{id:\"minecraft:poppy\",count:1b,Count:1b},{},{},{}],ArmorDropChances:[100.0f,0.0f,0.0f,0.0f],CustomNameVisible:1b,Health:1.0f}`;
 
                 document.getElementById("result-field").innerHTML = cmd;
             } else {
@@ -137,129 +135,136 @@
 <body>
     <div id="container">
         <form action="javascript:generateCommand()" id="container-form">
-            <label>Type:</label><br>
-            <select id="type" required>
-                <option value="minecraft:allay">Allay</option>
-                <option value="minecraft:armadillo">Armadillo</option>
-                <option value="minecraft:axolotl">Axolotl</option>
-                <option value="minecraft:bat">Bat</option>
-                <option value="minecraft:bee">Bee</option>
-                <option value="minecraft:blaze">Blaze</option>
-                <option value="minecraft:bogged">Bogged</option>
-                <option value="minecraft:breeze">Breeze</option>
-                <option value="minecraft:camel">Camel</option>
-                <option value="minecraft:cat">Cat</option>
-                <option value="minecraft:cave_spider">Cave Spider</option>
-                <option value="minecraft:chicken">Chicken</option>
-                <option value="minecraft:cod">Cod</option>
-                <option value="minecraft:cow">Cow</option>
-                <option value="minecraft:creaking">Creaking</option>
-                <option value="minecraft:creeper">Creeper</option>
-                <option value="minecraft:dolphin">Dolphin</option>
-                <option value="minecraft:donkey">Donkey</option>
-                <option value="minecraft:drowned">Drowned</option>
-                <option value="minecraft:elder_guardian">Elder Guardian</option>
-                <option value="minecraft:ender_dragon">Ender Dragon</option>
-                <option value="minecraft:enderman">Enderman</option>
-                <option value="minecraft:endermite">Endermite</option>
-                <option value="minecraft:evoker">Evoker</option>
-                <option value="minecraft:fox">Fox</option>
-                <option value="minecraft:frog">Frog</option>
-                <option value="minecraft:ghast">Ghast</option>
-                <option value="minecraft:giant">Giant</option>
-                <option value="minecraft:glow_squid">Glow Squid</option>
-                <option value="minecraft:goat">Goat</option>
-                <option value="minecraft:guardian">Guardian</option>
-                <option value="minecraft:hoglin">Hoglin</option>
-                <option value="minecraft:horse">Horse</option>
-                <option value="minecraft:husk">Husk</option>
-                <option value="minecraft:illusioner">Illusioner</option>
-                <option value="minecraft:iron_golem">Iron Golem</option>
-                <option value="minecraft:llama">Llama</option>
-                <option value="minecraft:magma_cube">Magma Cube</option>
-                <option value="minecraft:mooshroom">Mooshroom</option>
-                <option value="minecraft:mule">Mule</option>
-                <option value="minecraft:ocelot">Ocelot</option>
-                <option value="minecraft:panda">Panda</option>
-                <option value="minecraft:parrot">Parrot</option>
-                <option value="minecraft:phantom">Phantom</option>
-                <option value="minecraft:pig">Pig</option>
-                <option value="minecraft:piglin">Piglin</option>
-                <option value="minecraft:piglin_brute">Piglin Brute</option>
-                <option value="minecraft:pillager">Pillager</option>
-                <option value="minecraft:polar_bear">Polar Bear</option>
-                <option value="minecraft:pufferfish">Pufferfish</option>
-                <option value="minecraft:rabbit">Rabbit</option>
-                <option value="minecraft:ravager">Ravager</option>
-                <option value="minecraft:salmon">Salmon</option>
-                <option value="minecraft:sheep">Sheep</option>
-                <option value="minecraft:shulker">Shulker</option>
-                <option value="minecraft:silverfish">Silverfish</option>
-                <option value="minecraft:skeleton">Skeleton</option>
-                <option value="minecraft:skeleton_horse">Skeleton Horse</option>
-                <option value="minecraft:slime">Slime</option>
-                <option value="minecraft:sniffer">Sniffer</option>
-                <option value="minecraft:snow_golem">Snow Golem</option>
-                <option value="minecraft:spider">Spider</option>
-                <option value="minecraft:squid">Squid</option>
-                <option value="minecraft:stray">Stray</option>
-                <option value="minecraft:strider">Strider</option>
-                <option value="minecraft:tadpole">Tadpole</option>
-                <option value="minecraft:trader_llama">Trader Llama</option>
-                <option value="minecraft:tropical_fish">Tropical Fish</option>
-                <option value="minecraft:turtle">Turtle</option>
-                <option value="minecraft:vex">Vex</option>
-                <option value="minecraft:villager">Villager</option>
-                <option value="minecraft:vindicator">Vindicator</option>
-                <option value="minecraft:wandering_trader">Wandering Trader</option>
-                <option value="minecraft:witch">Witch</option>
-                <option value="minecraft:wither">Wither</option>
-                <option value="minecraft:wither_skeleton">Wither Skeleton</option>
-                <option value="minecraft:wolf">Wolf</option>
-                <option value="minecraft:warden">Warden</option>
-                <option value="custom:uwurden">UwUrden</option>
-                <option value="minecraft:zoglin">Zoglin</option>
-                <option value="minecraft:zombie">Zombie</option>
-                <option value="minecraft:zombie_horse">Zombie Horse</option>
-                <option value="minecraft:zombie_villager">Zombie Villager</option>
-                <option value="minecraft:zombified_piglin">Zombified Piglin</option>
-            </select>
-            <br>
-            <br>
+            <div>
+                <label>Type:</label><br>
+                <select id="type" required>
+                    <option value="minecraft:allay">Allay</option>
+                    <option value="minecraft:armadillo">Armadillo</option>
+                    <option value="minecraft:axolotl">Axolotl</option>
+                    <option value="minecraft:bat">Bat</option>
+                    <option value="minecraft:bee">Bee</option>
+                    <option value="minecraft:blaze">Blaze</option>
+                    <option value="minecraft:bogged">Bogged</option>
+                    <option value="minecraft:breeze">Breeze</option>
+                    <option value="minecraft:camel">Camel</option>
+                    <option value="minecraft:cat">Cat</option>
+                    <option value="minecraft:cave_spider">Cave Spider</option>
+                    <option value="minecraft:chicken">Chicken</option>
+                    <option value="minecraft:cod">Cod</option>
+                    <option value="minecraft:cow">Cow</option>
+                    <option value="minecraft:creaking">Creaking</option>
+                    <option value="minecraft:creeper">Creeper</option>
+                    <option value="minecraft:dolphin">Dolphin</option>
+                    <option value="minecraft:donkey">Donkey</option>
+                    <option value="minecraft:drowned">Drowned</option>
+                    <option value="minecraft:elder_guardian">Elder Guardian</option>
+                    <option value="minecraft:ender_dragon">Ender Dragon</option>
+                    <option value="minecraft:enderman">Enderman</option>
+                    <option value="minecraft:endermite">Endermite</option>
+                    <option value="minecraft:evoker">Evoker</option>
+                    <option value="minecraft:fox">Fox</option>
+                    <option value="minecraft:frog">Frog</option>
+                    <option value="minecraft:ghast">Ghast</option>
+                    <option value="minecraft:giant">Giant</option>
+                    <option value="minecraft:glow_squid">Glow Squid</option>
+                    <option value="minecraft:goat">Goat</option>
+                    <option value="minecraft:guardian">Guardian</option>
+                    <option value="minecraft:hoglin">Hoglin</option>
+                    <option value="minecraft:horse">Horse</option>
+                    <option value="minecraft:husk">Husk</option>
+                    <option value="minecraft:illusioner">Illusioner</option>
+                    <option value="minecraft:iron_golem">Iron Golem</option>
+                    <option value="minecraft:llama">Llama</option>
+                    <option value="minecraft:magma_cube">Magma Cube</option>
+                    <option value="minecraft:mooshroom">Mooshroom</option>
+                    <option value="minecraft:mule">Mule</option>
+                    <option value="minecraft:ocelot">Ocelot</option>
+                    <option value="minecraft:panda">Panda</option>
+                    <option value="minecraft:parrot">Parrot</option>
+                    <option value="minecraft:phantom">Phantom</option>
+                    <option value="minecraft:pig">Pig</option>
+                    <option value="minecraft:piglin">Piglin</option>
+                    <option value="minecraft:piglin_brute">Piglin Brute</option>
+                    <option value="minecraft:pillager">Pillager</option>
+                    <option value="minecraft:polar_bear">Polar Bear</option>
+                    <option value="minecraft:pufferfish">Pufferfish</option>
+                    <option value="minecraft:rabbit">Rabbit</option>
+                    <option value="minecraft:ravager">Ravager</option>
+                    <option value="minecraft:salmon">Salmon</option>
+                    <option value="minecraft:sheep">Sheep</option>
+                    <option value="minecraft:shulker">Shulker</option>
+                    <option value="minecraft:silverfish">Silverfish</option>
+                    <option value="minecraft:skeleton">Skeleton</option>
+                    <option value="minecraft:skeleton_horse">Skeleton Horse</option>
+                    <option value="minecraft:slime">Slime</option>
+                    <option value="minecraft:sniffer">Sniffer</option>
+                    <option value="minecraft:snow_golem">Snow Golem</option>
+                    <option value="minecraft:spider">Spider</option>
+                    <option value="minecraft:squid">Squid</option>
+                    <option value="minecraft:stray">Stray</option>
+                    <option value="minecraft:strider">Strider</option>
+                    <option value="minecraft:tadpole">Tadpole</option>
+                    <option value="minecraft:trader_llama">Trader Llama</option>
+                    <option value="minecraft:tropical_fish">Tropical Fish</option>
+                    <option value="minecraft:turtle">Turtle</option>
+                    <option value="minecraft:vex">Vex</option>
+                    <option value="minecraft:villager">Villager</option>
+                    <option value="minecraft:vindicator">Vindicator</option>
+                    <option value="minecraft:wandering_trader">Wandering Trader</option>
+                    <option value="minecraft:witch">Witch</option>
+                    <option value="minecraft:wither">Wither</option>
+                    <option value="minecraft:wither_skeleton">Wither Skeleton</option>
+                    <option value="minecraft:wolf">Wolf</option>
+                    <option value="minecraft:warden">Warden</option>
+                    <option value="custom:uwurden">UwUrden</option>
+                    <option value="minecraft:zoglin">Zoglin</option>
+                    <option value="minecraft:zombie">Zombie</option>
+                    <option value="minecraft:zombie_horse">Zombie Horse</option>
+                    <option value="minecraft:zombie_villager">Zombie Villager</option>
+                    <option value="minecraft:zombified_piglin">Zombified Piglin</option>
+                </select>
+            </div>
 
-            <label>Coords:</label><br>
-            <label>X</label>
-            <input type="number" id="coord-x" class="field" value="0" required><br>
-            <label>Y</label>
-            <input type="number" id="coord-y" class="field" value="1" required><br>
-            <label>Z</label>
-            <input type="number" id="coord-z" class="field" value="0" required><br>
-            <label>Offset</label>
-            <input type="checkbox" id="coords-offset" checked>
-            <br>
-            <br>
+            <div>
+                <label>Coords:</label><br>
+                <label>X</label>
+                <input type="number" id="coord-x" class="field" value="0" required><br>
+                <label>Y</label>
+                <input type="number" id="coord-y" class="field" value="1" required><br>
+                <label>Z</label>
+                <input type="number" id="coord-z" class="field" value="0" required><br>
+                <label>Offset</label>
+                <input type="checkbox" id="coords-offset" checked>
+            </div>
 
-            <label>Tags</label><br>
-            <input type="text" id="nbt-tags" class="tags-field">
-            <input type="text" id="nbt-tags" class="field">
-            <br>
-            <br>
+            <div>
+                <label>Tags</label><br>
+                <input type="text" id="nbt-tags" class="field">
+            </div>
             
-            <label>NoGravity</label>
-            <input type="checkbox" id="nbt-nogravity"><br>
-            <label>Invulnerable</label>
-            <input type="checkbox" id="nbt-invulnerable"><br>
-            <label>NoAI</label>
-            <input type="checkbox" id="nbt-noai">
-            <br>
-            <br>
+            
+            <div>
+                <label>CustomName</label>
+                <input type="text" id="nbt-customname" class="field"><br>
+                <label>CustomNameVisible</label>
+                <input type="checkbox" id="nbt-customnamevisible"><br>
+                <label>Health</label>
+                <input type="number" id="nbt-health"><br>
+                <label>NoGravity</label>
+                <input type="checkbox" id="nbt-nogravity"><br>
+                <label>Invulnerable</label>
+                <input type="checkbox" id="nbt-invulnerable"><br>
+                <label>NoAI</label>
+                <input type="checkbox" id="nbt-noai">  
+            </div>
 
-            <button type="submit" class="button">Create the command!</button>
-	    <br>
-            <button type="button" onclick="copyCommand()" id="copy-button" class="button">Copy</button>
-            <br>
-            <br>
-            <textarea id="result-field" readonly></textarea>
+            <div>
+                <button type="submit" class="button">Create the command!</button>
+                <button type="button" onclick="copyCommand()" id="copy-button" class="button">Copy</button>
+            </div>
+            <div>
+                <textarea id="result-field" readonly></textarea>
+            </div>
         </form>
     </div>
 </body>
